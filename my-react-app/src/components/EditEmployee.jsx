@@ -1,0 +1,89 @@
+import React, { useState } from 'react'
+import {useForm} from 'react-hook-form'
+import { useLocation } from 'react-router'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+function EditEmployee() {
+  const navigate = useNavigate()
+  const { register, handleSubmit, formState: { errors },setValue } = useForm()
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
+  
+  const {state}=useLocation()
+   useEffect(()=>{
+    setValue("name",state.name)
+    setValue("email",state.email)
+    setValue("mobile",state.mobile)
+    setValue("designation",state.designation)
+    setValue("companyname",state.companyname)
+  },[])
+    
+    const saveModified=async (modifiedemp)=>{
+      try{
+       setLoading(true)      // console.log(modifiedemp)
+      //Make http put req
+      const res=await axios.put(`http://localhost:5000/emp-api/employee/${state._id}`,modifiedemp)
+      if(res.status===200){
+        //navigate to list of emp
+        navigate("/list-emp")
+      }
+      else {
+        let errorRes = await res.json()
+        console.log("error response is",errorRes)
+        throw new Error(errorRes.message)  
+      }
+    } catch (err) {
+      console.log("err is", err)
+      //deal with error
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+    }
+     if (loading) {
+    return <p className='text-4xl text-center'>Loading...</p>
+  }
+
+  if (error) {
+    return <p className='text-center text-red-500 text-5xl'>{error}</p> 
+  }
+  return (
+    <div>
+        <div>
+      <h1 className='text-center text-5xl'>EDIT DETAILS</h1>
+
+      <form className="max-w-md mt-10 mx-auto" onSubmit={handleSubmit(saveModified)}>
+
+        <input type="text" placeholder='Enter name'
+          {...register("name")}
+          className='mb-3 border-2 w-full rounded-2xl p-3 bg-white' />
+
+        <input type="email" placeholder='Enter email'
+          {...register("email")}
+          className='mb-3 border-2 w-full rounded-2xl p-3  bg-white' />
+
+        <input type="text" placeholder='Enter mobile '
+          {...register("mobile")}
+          className='mb-3 border-2 w-full rounded-2xl p-3 bg-white' />
+
+        <input type="text" placeholder='Enter designation'
+          {...register("designation")}
+          className='mb-3 border-2 w-full rounded-2xl p-3  bg-white' />
+
+        <input type="text" placeholder='Enter companyname'
+          {...register("companyname")}
+          className='mb-3 border-2 w-full rounded-2xl p-3  bg-white' />
+
+        <button type='submit'
+          className='mb-3 block mx-auto bg-amber-200 w-30 border-2 rounded-2xl p-3'>
+          Save
+        </button>
+
+      </form>
+    </div>
+    </div>
+  )
+}
+
+export default EditEmployee
