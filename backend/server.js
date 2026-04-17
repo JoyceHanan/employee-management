@@ -2,8 +2,6 @@ import exp from "express";
 import { connect } from "mongoose";
 import { empApp } from "./API/EmployeeAPI.js";
 import cors from "cors";
-import { config } from "dotenv";
-config();
 const app = exp();
 
 // CORS
