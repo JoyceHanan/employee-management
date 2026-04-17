@@ -5,7 +5,7 @@ import cors from "cors";
 import { config } from "dotenv";
 
 config();
-
+console.log("MONGO_URI:", process.env.MONGO_URI);
 const app = exp();
 
 app.use(
@@ -22,7 +22,7 @@ const connectDB = async () => {
   try {
     await connect(process.env.MONGO_URI);
     console.log("DB connected");
-
+   
     const PORT = process.env.PORT || 5000;
 
     app.listen(PORT, () =>

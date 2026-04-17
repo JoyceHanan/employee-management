@@ -23,7 +23,7 @@ function EditEmployee() {
       try{
        setLoading(true)      // console.log(modifiedemp)
       //Make http put req
-      const res=await axios.put(`http://localhost:5000/emp-api/employee/${state._id}`,modifiedemp)
+      const res=await axios.put(`https://employee-management-szka.onrender.com/emp-api/employee/${state._id}`,modifiedemp)
       if(res.status===200){
         //navigate to list of emp
         navigate("/list-emp")

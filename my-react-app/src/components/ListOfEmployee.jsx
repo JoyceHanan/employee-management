@@ -18,7 +18,7 @@ function ListOfEmployee() {
       navigate("/edit-emp",{state:empobj})
     }
      const deleteEmp=async (id)=>{
-          let res= await axios.delete(`http://localhost:5000/emp-api/employee/${id}`,id)
+          let res= await axios.delete(`https://employee-management-szka.onrender.com/emp-api/employee/${id}`,id)
           if(res.status===200){
             getEmps();
           }
@@ -26,7 +26,7 @@ function ListOfEmployee() {
     
   // get all emps
   async function getEmps() {
-            let res= await axios("http://localhost:5000/emp-api/employee")
+            let res= await axios("https://employee-management-szka.onrender.com/emp-api/employee")
             if(res.status===200){
              let resobj=await res.data;
              setEmps(resobj.payload)
