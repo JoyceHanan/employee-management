@@ -18,16 +18,19 @@ app.use(exp.json());
 app.use("/emp-api", empApp);
 // DB connection
 const connectDB = async () => {
+// 1. Add a log to confirm the env var is loaded
+const connectDB = async () => {
   try {
-    await connect(process.env.MONGO_URI);  
+    console.log("MONGO_URI:", process.env.MONGO_URI ? "Found ✅" : "Missing ❌");
+    await connect(process.env.MONGO_URI);
     console.log("DB connected");
-    const PORT = process.env.PORT || 5000;  
-    app.listen(PORT, () =>
-      console.log(`server listening on port ${PORT}`)
-    );
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`server listening on port ${PORT}`));
   } catch (err) {
-    console.log("err in DB connection", err.message);
+    console.log("err in DB connection:", err.message); // 2. Add process.exit so crash is visible
+    process.exit(1);
   }
+};
 };
 
 connectDB();
